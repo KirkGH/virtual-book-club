@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discussion Board</title>
+  </head>
+  <body>
+    <!-- Post Section -->
+    <h1>Discussion Board</h1>
+    <section id="postSection">
+      <h2>Share Your Thoughts</h2>
+      <form id="postForm">
+        <label for="bookTitle">Book Title:</label>
+        <input type="text" id="bookTitle" name="bookTitle" required />
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required />
+        <label for="postContent">Your Thoughts:</label>
+        <textarea
+          id="postContent"
+          name="postContent"
+          rows="5"
+          required
+        ></textarea>
+        <button type="submit">Post</button>
+      </form>
+    </section>
+
+    <!-- Discussion Posts -->
+    <section id="discussionPosts">
+      <h2>Discussion Posts</h2>
+      <div id="postsList">
+        <div class="post">
+          <div class="userProfile">
+            <img />
+            <p class="username">rhn29</p>
+          </div>
+          <h3>Stuart Little</h3>
+          <p><strong>Author:</strong> E. B. White</p>
+          <p>Very good</p>
+          <button class="editPost">Edit</button>
+          <button class="deletePost">Delete</button>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
