@@ -21,16 +21,16 @@ app.post("/threads", (req, res) => {
   // For now we can make up book_id and user_account_id to just see if this works
   let book_id = req.body.book_id;
   let title = req.body.title;
+  let book_club_id = req.body.book_club_id;
   let user_account_id = req.body.user_account_id;
   let comment = req.body.comment;
-  let created = req.body.created;
 
   if(typeof title !== 'string' || title.length > 15 || title.length < 1){
     res.status(400);
     return res.json({});
   }
 
-  pool.query("INSERT INTO threads(book_id, created, user_account_id, book_club_id, title, comment) VALUES($1, $2, $3, $4, $5, $6)", [book_id, created, user_account_id, book_club_id, title, comment])
+  pool.query("INSERT INTO threads(book_id, created, user_account_id, book_club_id, title, comment) VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5)", [book_id, user_account_id, book_club_id, title, comment])
   .then(result => {
     res.status(200);
     return res.json({}); 
