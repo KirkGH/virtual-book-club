@@ -1,11 +1,16 @@
 const pg = require("pg");
 const express = require("express");
 const app = express();
+const path = require("path");
+const axios = require("axios");
 
 const port = 3000;
 const hostname = "localhost";
 
-const env = require("../env.json");
+const apiFile = require("../env.json");
+const apiKey = apiFile["api_key"];
+const baseUrl = "https://www.googleapis.com/books/v1/volumes";
+
 const Pool = pg.Pool;
 const pool = new Pool(env);
 pool.connect().then(function () {
@@ -14,6 +19,35 @@ pool.connect().then(function () {
 
 app.use(express.static("public"));
 app.use(express.json());
+
+
+// Route to serve the static HTML page
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "books", "index.html"));
+});
+
+// Route to handle book search requests with maxResults
+app.get("/search", (req, res) => {
+  const query = req.query.q;
+  const maxResults = 40; // Set max results to the Google API limit of 40 items
+
+  if (!query) {
+    return res.status(400).json({ error: "Search query is required" });
+  }
+
+  axios
+    .get(`${baseUrl}?q=${query}&key=${apiKey}&maxResults=${maxResults}`)
+    .then(response => {
+      res.status(200).json(response.data); // Send book data to the client
+    })
+    .catch(error => {
+      if (error.response) {
+        res.status(error.response.status).json({ error: error.response.data.error.message });
+      } else {
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+});
 
 
 app.post("/threads", (req, res) => {
