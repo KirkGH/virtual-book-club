@@ -1,5 +1,5 @@
-CREATE DATABASE bookClub;
-\c bookClub
+CREATE DATABASE bookclub;
+\c bookclub
 CREATE TABLE threads (
 	id SERIAL PRIMARY KEY,
     book_id int,
