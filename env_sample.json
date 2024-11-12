@@ -1,0 +1,9 @@
+{
+  "user": "USERNAME",
+  "host": "localhost",
+  "database": "bookclub",
+  "password": "PASSWORD",
+  "port": 5432,
+  "api_key": "APIKEY",
+  "api_url": "https://www.googleapis.com/books/v1/volumes?q=search+terms"
+}
