@@ -7,8 +7,8 @@ const axios = require("axios");
 const port = 3000;
 const hostname = "localhost";
 
-const apiFile = require("../env.json");
-const apiKey = apiFile["api_key"];
+const env = require("../env.json");
+const apiKey = env["api_key"];
 const baseUrl = "https://www.googleapis.com/books/v1/volumes";
 
 const Pool = pg.Pool;

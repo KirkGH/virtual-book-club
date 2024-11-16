@@ -1,4 +1,4 @@
 {
-	"api_key": "REPLACE WITH YOUR OWN KEY",
+	"api_key": "SAMPLE_KEY",
 	"api_url": "https://www.googleapis.com/books/v1/volumes?q=search+terms"
   }
