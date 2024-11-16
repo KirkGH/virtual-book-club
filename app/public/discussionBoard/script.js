@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((body) => {
         console.log("Received response body", body);
+        console.log("the id", body.thread_id);
 
         const postDiv = document.createElement("div");
         const userProfileDiv = document.createElement("div");
@@ -68,18 +69,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const editButton = document.createElement("button");
         editButton.textContent = "Edit";
         editButton.addEventListener("click", () =>
-          editPost(postDiv, postContentDescription)
+          editPost(postDiv, postContentDescription, body.thread_id)
         );
         postDiv.appendChild(editButton);
 
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", () => deletePost(postDiv));
+        deleteButton.addEventListener("click", () => deletePost(postDiv, body.thread_id));
         postDiv.appendChild(deleteButton);
 
         const replyButton = document.createElement("button");
         replyButton.textContent = "Reply";
-        replyButton.addEventListener("click", () => createReplyBox(postDiv));
+        replyButton.addEventListener("click", () => createReplyBox(postDiv, body.thread_id));
         postDiv.appendChild(replyButton);
 
         postsList.appendChild(postDiv);
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
-  function editPost(postDiv, postContentDescription) {
+  function editPost(postDiv, postContentDescription, threadId) {
     const currentContent = postContentDescription.textContent;
     const editTextarea = document.createElement("textarea");
     editTextarea.value = currentContent;
@@ -101,17 +102,43 @@ document.addEventListener("DOMContentLoaded", function () {
     saveButton.addEventListener("click", () => {
       postContentDescription.textContent = editTextarea.value;
       editTextarea.replaceWith(postContentDescription);
+      console.log('threadId:', threadId); 
+      console.log('new text:', editTextarea.value); 
+      fetch(`/threads/${threadId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: editTextarea.value,
+        }),
+      }).then((response) => {
+        if (response.status === 200) {
+          console.log("Post updated successfully.");
+        } else {
+          console.log("Failed to update post.");
+        }
+      });
       saveButton.remove();
     });
 
     postDiv.appendChild(saveButton);
   }
 
-  function deletePost(postDiv) {
+  function deletePost(postDiv, threadId) {
     postsList.removeChild(postDiv);
+    fetch(`/threads/${threadId}`, {
+      method: "DELETE",
+    }).then((response) => {
+      if (response.status === 200) {
+        console.log("Post deleted successfully.");
+      } else {
+        console.log("Failed to delete post.");
+      }
+    });
   }
 
-  function createReplyBox(postDiv) {
+  function createReplyBox(postDiv, postId) {
     if (postDiv.querySelector(".replyBox")) return;
 
     const replyBox = document.createElement("div");
@@ -125,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
     submitReplyButton.addEventListener("click", () => {
       const replyContent = replyTextarea.value;
       if (replyContent.trim()) {
-        addReply(postDiv, replyContent);
+        addReply(postDiv, replyContent, postId);
         replyBox.remove();
       }
     });
@@ -134,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
     postDiv.appendChild(replyBox);
   }
 
-  function addReply(postDiv, replyContent) {
+  function addReply(postDiv, replyContent, postId) {
     const replyDiv = document.createElement("div");
 
     const replyText = document.createElement("p");
@@ -142,5 +169,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     replyDiv.appendChild(replyText);
     postDiv.appendChild(replyDiv);
+
+    fetch("/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        thread_id: postId,
+        user_account_id: 123, 
+        content: replyContent,
+      }),
+    }).then((response) => {
+      if (response.status === 200) {
+        console.log("Reply added successfully.");
+      } else {
+        console.log("Failed to add reply.");
+      }
+    });
   }
 });

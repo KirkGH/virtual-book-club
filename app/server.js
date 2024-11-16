@@ -30,10 +30,10 @@ app.post("/threads", (req, res) => {
     return res.json({});
   }
 
-  pool.query("INSERT INTO threads(book_id, created, user_account_id, book_club_id, title, comment) VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5)", [book_id, user_account_id, book_club_id, title, comment])
+  pool.query("INSERT INTO threads(book_id, created, user_account_id, book_club_id, title, comment) VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5) RETURNING id", [book_id, user_account_id, book_club_id, title, comment])
   .then(result => {
     res.status(200);
-    return res.json({}); 
+    return res.json({thread_id: result.rows[0].id }); 
   })
   .catch(error => {
     console.error(error);
@@ -87,6 +87,56 @@ app.get("/threads", (req, res) => {
       res.json({});
     });
   }
+});
+
+app.post("/posts", async (req, res) => {
+  const { thread_id, user_account_id, content } = req.body;
+  
+  pool.query(
+    `INSERT INTO posts (thread_id, user_account_id, content)
+     VALUES ($1, $2, $3)
+     RETURNING id`,
+    [thread_id, user_account_id, content]
+  )
+    .then((result) => {
+      res.json({ reply_id: result.rows[0].id, message: "Post added successfully" });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Failed to add post." });
+    });
+});
+
+app.delete("/threads/:id", (req, res) => {
+  const threadId = req.params.id;
+
+  pool.query("DELETE FROM threads WHERE id = $1", [threadId])
+    .then((result) => {
+      res.status(200).json({ message: "Thread deleted successfully" });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Failed to delete thread." });
+    });
+});
+
+app.put("/threads/:id", (req, res) => {
+  const comment = req.body.content;
+  const threadId = req.params.id;
+
+  pool.query(
+    `UPDATE threads
+     SET comment = $1
+     WHERE id = $2`,
+    [comment, threadId]
+  )
+    .then((result) => {
+      res.status(200).json({ message: "Thread updated successfully" });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Failed to update thread." });
+    });
 });
 
 app.listen(port, hostname, () => {
