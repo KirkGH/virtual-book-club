@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   postForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    const threadTitle = document.getElementById("threadTitle").value;
     const bookTitle = document.getElementById("bookTitle").value;
     const author = document.getElementById("author").value;
     const postContent = document.getElementById("postContent").value;
@@ -51,9 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         postDiv.appendChild(userProfileDiv);
 
-        const bookTitleH3 = document.createElement("h3");
-        bookTitleH3.textContent = bookTitle;
-        postDiv.appendChild(bookTitleH3);
+        const threadTitleH3 = document.createElement("h3");
+        threadTitleH3.textContent = threadTitle;
+        postDiv.appendChild(threadTitleH3);
+
+        const bookTitleH4 = document.createElement("h4");
+        bookTitleH4.textContent = `Book Title: ${bookTitle}`;
+        postDiv.appendChild(bookTitleH4);
 
         const authorDescription = document.createElement("p");
         const authorLabel = document.createElement("strong");
@@ -75,12 +80,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", () => deletePost(postDiv, body.thread_id));
+        deleteButton.addEventListener("click", () =>
+          deletePost(postDiv, body.thread_id)
+        );
         postDiv.appendChild(deleteButton);
 
         const replyButton = document.createElement("button");
         replyButton.textContent = "Reply";
-        replyButton.addEventListener("click", () => createReplyBox(postDiv, body.thread_id));
+        replyButton.addEventListener("click", () =>
+          createReplyBox(postDiv, body.thread_id)
+        );
         postDiv.appendChild(replyButton);
 
         postsList.appendChild(postDiv);
@@ -102,8 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
     saveButton.addEventListener("click", () => {
       postContentDescription.textContent = editTextarea.value;
       editTextarea.replaceWith(postContentDescription);
-      console.log('threadId:', threadId); 
-      console.log('new text:', editTextarea.value); 
       fetch(`/threads/${threadId}`, {
         method: "PUT",
         headers: {
@@ -177,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({
         thread_id: postId,
-        user_account_id: 123, 
+        user_account_id: 123,
         content: replyContent,
       }),
     }).then((response) => {
