@@ -12,6 +12,9 @@ Our project will be an online book club organizer. We want people to be able to 
 
 1. **Install dependencies:**
    npm install
+   npm install dotenv
+   npm install passport passport-auth0
+   npm install express-session
 
 2. **Set Up Environment:**
    npm run setup

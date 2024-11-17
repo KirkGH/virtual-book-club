@@ -1,5 +1,12 @@
-const pg = require("pg");
-const express = require("express");
+require('dotenv').config({ path: '../.env' }); // Provide the correct path to .env file
+
+const express = require('express');
+const passport = require('passport');
+const Auth0Strategy = require('passport-auth0');
+const pg = require('pg');
+const path = require('path'); // Add this import to resolve path
+const session = require('express-session'); // We still need express-session to manage sessions
+
 const app = express();
 
 const port = 3000;
@@ -15,6 +22,77 @@ pool.connect().then(function () {
 app.use(express.static("public"));
 app.use(express.json());
 
+// Auth0 configuration for Passport.js
+passport.use(
+  new Auth0Strategy(
+    {
+      domain: process.env.AUTH0_DOMAIN, 
+      clientID: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET, 
+      callbackURL: 'http://localhost:3000/homePageLoggedIn', 
+    },
+    (accessToken, refreshToken, extraParams, profile, done) => {
+      return done(null, profile);
+    }
+  )
+);
+
+// Passport session setup
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
+
+// Express session configuration to maintain login sessions
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/login', passport.authenticate('auth0'));
+
+// Callback route for Auth0 to redirect after successful authentication
+app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/' }), (req, res) => {
+  res.redirect('/homePageLoggedIn');
+});
+
+app.get('/profile', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send(`
+      <h1>Welcome, ${req.user.name}</h1>
+      <p>Your email: ${req.user.email}</p>
+      <a href="/logout">Logout</a>
+    `);
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get("/homepage", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.sendFile(path.join(__dirname, "public", "homePage", "homePageLoggedIn.html"));
+  } else {
+    res.sendFile(path.join(__dirname, "public", "homePage", "homePage.html"));
+  }
+});
+
+// New route for '/homePageLoggedIn' after Auth0 login
+app.get('/homePageLoggedIn', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.sendFile(path.join(__dirname, 'public', 'homePage', 'homePageLoggedIn.html'));
+  } else {
+    res.redirect('/login'); 
+  }
+});
+
+// Logout route - logs the user out using Passport.js
+app.get('/logout', (req, res) => {
+  req.logout((err) => {
+    res.redirect('/homepage'); 
+  });
+});
 
 app.post("/threads", (req, res) => {
   // Title refers to title of the thread
