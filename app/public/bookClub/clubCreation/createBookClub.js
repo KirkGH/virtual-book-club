@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
       meetingFrequency,
     };
     localStorage.setItem("bookClubData", JSON.stringify(bookClubData));
+    // End
 
     window.location.href = "./bookClubHome/bookClubHome.html";
   });
