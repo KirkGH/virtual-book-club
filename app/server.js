@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '../.env' }); // Provide the correct path to .env file
 
+const axios = require("axios");
 const express = require('express');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
@@ -13,6 +14,10 @@ const port = 3000;
 const hostname = "localhost";
 
 const env = require("../env.json");
+const apiKey = env["api_key"];
+const baseUrl = "https://www.googleapis.com/books/v1/volumes";
+
+
 const Pool = pg.Pool;
 const pool = new Pool(env);
 pool.connect().then(function () {
@@ -21,6 +26,60 @@ pool.connect().then(function () {
 
 app.use(express.static("public"));
 app.use(express.json());
+
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "searchBooks", "index.html"));
+});
+
+// Route to handle book search requests with genre filtering
+app.get("/search", async (req, res) => {
+  const { q, author, genre } = req.query;
+  const maxResults = 40;
+
+  // Build the query string
+  let query = "";
+
+  if (q) query += `${q}`;
+  if (author) query += `+inauthor:${author}`;
+  if (!q && !author && genre) query += `${genre}`; // Handle searching by genre only.
+
+  if (!query) {
+    return res.status(400).json({ error: "At least one search query (title, author, or genre) is required." });
+  }
+
+  try {
+    const response = await axios.get(`${baseUrl}?q=${query}&key=${apiKey}&maxResults=${maxResults}`);
+    let books = response.data.items || [];
+
+    // Log fetched books for debugging
+    console.log("Fetched Books:", books);
+
+    // Filter books by genre if provided and the query includes title/author
+    if (genre && (q || author)) {
+      books = books.filter(book => {
+        const categories = book.volumeInfo.categories || [];
+        return categories.some(category =>
+          category.toLowerCase().includes(genre.toLowerCase())
+        );
+      });
+    }
+
+    // Handle no results after filtering
+    if (books.length === 0) {
+      return res.status(200).json({
+        items: [],
+        message: `No results found.`,
+      });
+    }
+
+    res.status(200).json({ items: books });
+  } catch (error) {
+    console.error("Error fetching books from API:", error.message);
+    res.status(500).json({ error: "Internal server error. Please try again later." });
+  }
+});
+
 
 // Auth0 configuration for Passport.js
 passport.use(

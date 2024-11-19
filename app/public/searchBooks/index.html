@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Book Club</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Virtual Book Club</h1>
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Enter book title">
+    <input type="text" id="author-input" placeholder="Enter author name">
+    <select id="genre-select">
+      <option value="">Select Genre</option>
+      <option value="Fiction">Fiction</option>
+      <option value="Nonfiction">Nonfiction</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="Science">Science</option>
+      <option value="Mystery">Mystery</option>
+    </select>
+    <button id="search-button">Search</button>
+  </div>
+  <div id="results" class="results"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
