@@ -10,15 +10,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const meetingFrequency = document.getElementById("meetingFrequency").value;
 
     // Save to localStorage for now until can be stored on database
+    const someUser = "user123";
+    
     const bookClubData = {
-      clubName,
-      description,
-      genre,
-      meetingFrequency,
+      name: clubName,
+      description: description,
+      created_by: someUser,
     };
-    localStorage.setItem("bookClubData", JSON.stringify(bookClubData));
+    fetch("/createBookClub", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookClubData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Redirect to book club home page on success
+          window.location.href = "./bookClubHome/bookClubHome.html";
+        } else {
+          // Handle errors
+          console.error("Failed to create book club:", response.statusText);
+          alert("An error occurred while creating the book club. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while connecting to the server. Please try again.");
+     
+    //localStorage.setItem("bookClubData", JSON.stringify(bookClubData));
     // End
 
-    window.location.href = "./bookClubHome/bookClubHome.html";
+    //window.location.href = "./bookClubHome/bookClubHome.html";
+      });
   });
 });

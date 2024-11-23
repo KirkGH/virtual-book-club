@@ -276,6 +276,22 @@ app.put("/threads/:id", (req, res) => {
     });
 });
 
+app.post('/createBookClub', async (req, res) => {
+  const { clubName, description, created_by } = req.body;
+
+  try {
+    await pool.query(
+      `INSERT INTO book_clubs (name, description, created_at, created_by) 
+       VALUES ($1, $2, NOW(), $3)`,
+      [clubName, description, created_by]
+    );
+    res.status(200).send("Book club created successfully");
+  } catch (error) {
+    console.error("Error saving book club:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.listen(port, hostname, () => {
   console.log(`Listening at: http://${hostname}:${port}`);
 });

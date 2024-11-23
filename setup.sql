@@ -18,3 +18,24 @@ CREATE TABLE posts (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE book_clubs (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    created_by INT NOT NULL
+);
+CREATE TABLE members (
+    id SERIAL PRIMARY KEY,
+    club_id INT REFERENCES book_clubs(id) ON DELETE CASCADE,
+    user_id INT NOT NULL,
+    role VARCHAR(50) DEFAULT 'member',
+    joined_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    club_id INT REFERENCES book_clubs(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    discussion_date TIMESTAMP
+);
