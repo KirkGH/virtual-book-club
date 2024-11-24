@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gentle Readers</title>
-    <link rel="stylesheet" href="/homePage/homePage.css">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/profile/profile.css">
 </head>
 <body>
     <header>
@@ -13,14 +13,14 @@
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="books.html">Books</a></li>
-                <li><a href="bookClubHome.html">Clubs</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="/books.html">Books</a></li>
+                <li><a href="/bookClubHome.html">Clubs</a></li>
+                <li><a href="/about.html">About</a></li>
             </ul>
         </nav>
         <div class="user-info">
             <div class="user-menu">
-                <button class="user-name" onclick="toggleMenu()">Welcome, <strong>{{user.name}}</strong></button>
+                <button class="user-name" onclick="toggleMenu()">Welcome, <strong id="username">User</strong></button>
                 <div class="dropdown" id="userMenu">
                     <a href="/profile">Profile</a>
                     <a href="/logout">Log Out</a>
@@ -29,13 +29,12 @@
         </div>
     </header>
     <main>
-        <section id="welcome-section">
-            <div class="description">
-                <p>Welcome back to Gentle Readers! Enjoy exploring new books and connecting with fellow readers.</p>
-            </div>
+        <section id="profile-section">
+            <h2>Your Profile</h2>
+            <p><strong>Name:</strong> <span id="display-name">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="email">Loading...</span></p>
         </section>
     </main>
-
-    <script src="/homePage/homePage.js"></script>
+    <script src="/profile/profile.js"></script>
 </body>
 </html>

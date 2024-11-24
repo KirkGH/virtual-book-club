@@ -138,11 +138,7 @@ app.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/login');
   }
-  res.send(`
-    <h1>Welcome, ${req.user.displayName || req.user.nickname}</h1>
-    <p>Your email: ${req.user.emails ? req.user.emails[0].value : 'Not provided'}</p>
-    <a href="/logout">Logout</a>
-  `);
+  res.sendFile(path.join(__dirname, 'public', 'profile', 'profile.html'));
 });
 
 app.get('/homepage', (req, res) => {
@@ -171,10 +167,6 @@ app.use((req, res, next) => {
   console.log(`Path: ${req.path}, Authenticated: ${req.isAuthenticated()}`);
   next();
 });
-
-// EJS view engine setup
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
 app.post("/threads", (req, res) => {
   // Title refers to title of the thread
