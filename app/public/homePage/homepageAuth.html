@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gentle Readers</title>
-    <link rel="stylesheet" href="homePage.css">
+    <link rel="stylesheet" href="/homepage.css">
 </head>
 <body>
     <header>
@@ -19,7 +19,7 @@
             </ul>
         </nav>
         <div class="user-info">
-            <p>Welcome, <strong>{{user.name}}</strong>!</p>
+            <p>Welcome, <strong><%= user.displayName || user.nickname %></strong>!</p>
             <a href="/logout">Log Out</a>
         </div>
     </header>

@@ -1,12 +1,12 @@
-require('dotenv').config({ path: '../.env' }); // Provide the correct path to .env file
+require('dotenv').config({ path: '../.env' }); 
 
 const axios = require("axios");
 const express = require('express');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const pg = require('pg');
-const path = require('path'); // Add this import to resolve path
-const session = require('express-session'); // We still need express-session to manage sessions
+const path = require('path'); 
+const session = require('express-session'); 
 
 const app = express();
 
@@ -80,15 +80,14 @@ app.get("/search", async (req, res) => {
   }
 });
 
-
-// Auth0 configuration for Passport.js
+// Auth0 configuration
 passport.use(
   new Auth0Strategy(
     {
-      domain: process.env.AUTH0_DOMAIN, 
+      domain: process.env.AUTH0_DOMAIN,
       clientID: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET, 
-      callbackURL: 'http://localhost:3000/homePageLoggedIn', 
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      callbackURL: 'http://localhost:3000/callback',
     },
     (accessToken, refreshToken, extraParams, profile, done) => {
       return done(null, profile);
@@ -100,58 +99,82 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-// Express session configuration to maintain login sessions
-app.use(session({
-  secret: process.env.SECRET_KEY,
-  resave: false,
-  saveUninitialized: true,
-}));
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false, // Prevent sessions for unauthenticated users
+    cookie: {
+      secure: false, // Set this to true in production with HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/login', passport.authenticate('auth0'));
+app.get('/login', passport.authenticate('auth0', {
+  scope: 'openid email profile',
+}));
 
-// Callback route for Auth0 to redirect after successful authentication
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/' }), (req, res) => {
-  res.redirect('/homePageLoggedIn');
+  req.session.save((err) => {
+    if (err) {
+      console.error('Session save error:', err);
+    }
+    res.redirect('/homepageAuth');
+  });
+});
+
+app.get('/homepageAuth', (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+  res.sendFile(path.join(__dirname, 'public', 'homePage', 'homepageAuth.html'));
 });
 
 app.get('/profile', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.send(`
-      <h1>Welcome, ${req.user.name}</h1>
-      <p>Your email: ${req.user.email}</p>
-      <a href="/logout">Logout</a>
-    `);
-  } else {
-    res.redirect('/login');
+  if (!req.isAuthenticated()) {
+    return res.redirect('/login');
   }
+  res.send(`
+    <h1>Welcome, ${req.user.displayName || req.user.nickname}</h1>
+    <p>Your email: ${req.user.emails ? req.user.emails[0].value : 'Not provided'}</p>
+    <a href="/logout">Logout</a>
+  `);
 });
 
-app.get("/homepage", (req, res) => {
+app.get('/homepage', (req, res) => {
   if (req.isAuthenticated()) {
-    res.sendFile(path.join(__dirname, "public", "homePage", "homePageLoggedIn.html"));
-  } else {
-    res.sendFile(path.join(__dirname, "public", "homePage", "homePage.html"));
+    return res.redirect('/homepageAuth');
   }
+  res.sendFile(path.join(__dirname, 'public', 'homepage', 'homepage.html'));
 });
 
-// New route for '/homePageLoggedIn' after Auth0 login
-app.get('/homePageLoggedIn', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.sendFile(path.join(__dirname, 'public', 'homePage', 'homePageLoggedIn.html'));
-  } else {
-    res.redirect('/login'); 
-  }
-});
-
-// Logout route - logs the user out using Passport.js
 app.get('/logout', (req, res) => {
   req.logout((err) => {
-    res.redirect('/homepage'); 
+    if (err) {
+      console.error('Logout error:', err);
+    }
+
+    // Clear cookies
+    res.clearCookie('connect.sid'); 
+
+    // Redirect to Auth0 logout URL
+    const logoutURL = `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent('http://localhost:3000/homepage')}&client_id=${process.env.AUTH0_CLIENT_ID}`;
+    res.redirect(logoutURL);
   });
 });
+
+app.use((req, res, next) => {
+  console.log(`Path: ${req.path}, Authenticated: ${req.isAuthenticated()}`);
+  next();
+});
+
+// EJS view engine setup
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.post("/threads", (req, res) => {
   // Title refers to title of the thread
