@@ -4,6 +4,7 @@
     "setup": "psql -U postgres -f setup.sql"
   },
   "dependencies": {
+    "env-cmd": "^10.1.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
@@ -15,5 +16,8 @@
     "passport-auth0": "^1.4.4",
     "pg": "^8.13.1",
     "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.11"
   }
 }
