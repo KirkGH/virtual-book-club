@@ -292,13 +292,13 @@ app.put("/threads/:id", (req, res) => {
 });
 
 app.post('/createBookClub', async (req, res) => {
-  const { name, description, created_by } = req.body;
+  const { name, description, created_by, genre, meetfrequency } = req.body;
 
   try {
     await pool.query(
-      `INSERT INTO book_clubs (name, description, created_at, created_by) 
-       VALUES ($1, $2, NOW(), $3)`,
-      [name, description, created_by]
+      `INSERT INTO book_clubs (name, description, created_at, created_by, genre, meetfrequency) 
+       VALUES ($1, $2, NOW(), $3, $4, $5)`,
+      [name, description, created_by, genre, meetfrequency]
     );
     res.status(200).send("Book club created successfully");
   } catch (error) {

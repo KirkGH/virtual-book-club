@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
       name: clubName,
       description: description,
       created_by: someUser,
+      genre: genre,
+      meetfrequency: meetingFrequency,
     };
     fetch("/createBookClub", {
       method: "POST",

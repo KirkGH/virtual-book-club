@@ -23,7 +23,9 @@ CREATE TABLE book_clubs (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
-    created_by VARCHAR(15)
+    created_by VARCHAR(15),
+    genre VARCHAR(20),
+    meetfrequency VARCHAR(20)
 );
 CREATE TABLE members (
     id SERIAL PRIMARY KEY,
