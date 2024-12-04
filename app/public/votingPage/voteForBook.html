@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vote for a Book</title>
+    <script src="voteForBook.js" defer></script>
+  </head>
+  <body>
+    <h1>Vote for the Next Book!</h1>
+    <section id="bookChoices">
+      <h2>Choose Your Favorite</h2>
+      <form id="voteForm">
+        <div>
+          <input
+            type="radio"
+            id="book1"
+            name="bookChoice"
+            value="Book 1"
+            required
+          />
+          <label for="book1">Book 1</label>
+        </div>
+        <div>
+          <input type="radio" id="book2" name="bookChoice" value="Book 2" />
+          <label for="book2">Book 2</label>
+        </div>
+        <div>
+          <input type="radio" id="book3" name="bookChoice" value="Book 3" />
+          <label for="book3">Book 3</label>
+        </div>
+        <button type="submit">Submit Vote</button>
+      </form>
+    </section>
+    <section id="resultSection" hidden>
+      <h2>Thank you for voting!</h2>
+      <p id="resultMessage"></p>
+    </section>
+  </body>
+</html>
