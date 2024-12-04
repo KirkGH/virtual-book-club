@@ -23,7 +23,7 @@ CREATE TABLE book_clubs (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
-    created_by INT NOT NULL
+    created_by VARCHAR(15)
 );
 CREATE TABLE members (
     id SERIAL PRIMARY KEY,
