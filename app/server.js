@@ -307,6 +307,29 @@ app.post('/createBookClub', async (req, res) => {
   }
 });
 
+app.post('/voteForBook', async (req, res) => {
+  const { title } = req.body;
+
+  try {
+    const result = await pool.query("SELECT id FROM voting WHERE title = $1", [title]);
+
+    if (result.rows.length === 0) {
+      // If the book does not exist, insert it with a vote count of 1
+      await pool.query("INSERT INTO voting (title, votes) VALUES ($1, 1)", [title]);
+    } else {
+      console.log("In else");
+    await pool.query(
+      `UPDATE voting SET votes = votes + 1 WHERE title = $1`,
+      [title]
+    );
+  }
+    res.status(200).send("Vote updated successfully");
+  } catch (error) {
+    console.error("Error updating vote count:", error);
+    res.status(500).send("An error occured when updating vote.");
+  }
+});
+
 app.listen(port, hostname, () => {
   console.log(`Listening at: http://${hostname}:${port}`);
 });

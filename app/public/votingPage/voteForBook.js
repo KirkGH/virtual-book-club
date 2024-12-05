@@ -11,21 +11,37 @@ document.addEventListener("DOMContentLoaded", function () {
     options[2].nextElementSibling.textContent = bookChoices[2];
   }
 
-  voteForm.addEventListener("submit", function (e) {
+  voteForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const selectedBook = document.querySelector(
       "input[name='bookChoice']:checked"
     ).value;
 
-    resultMessage.textContent = `You voted for: ${selectedBook}`;
-    resultSection.hidden = false;
+    // resultMessage.textContent = `You voted for: ${selectedBook}`;
+    // resultSection.hidden = false;
 
     // temporarily store in localStorage
-    let votes = JSON.parse(localStorage.getItem("bookVotes")) || {};
-    votes[selectedBook] = (votes[selectedBook] || 0) + 1;
-    localStorage.setItem("bookVotes", JSON.stringify(votes));
+    try {
+      // Send vote to the server
+      await fetch("/voteForBook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: selectedBook }),
+      });
 
-    voteForm.hidden = true;
+      console.log(" the book name: " + selectedBook.value);
+  
+      resultMessage.textContent = "Your vote has been recorded!";
+      resultSection.hidden = false;
+      voteForm.hidden = true;
+    } catch (error) {
+      console.error("Error voting for book:", error);
+    }
+    // let votes = JSON.parse(localStorage.getItem("bookVotes")) || {};
+    // votes[selectedBook] = (votes[selectedBook] || 0) + 1;
+    // localStorage.setItem("bookVotes", JSON.stringify(votes));
+
+    //voteForm.hidden = true;
   });
 });

@@ -41,3 +41,8 @@ CREATE TABLE books (
     author VARCHAR(255) NOT NULL,
     discussion_date TIMESTAMP
 );
+CREATE TABLE voting (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    votes INTEGER DEFAULT 0
+);
