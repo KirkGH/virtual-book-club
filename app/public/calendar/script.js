@@ -4,11 +4,10 @@ addButton.addEventListener("click", async (event) => {
   // event.preventDefault();
 
   let userTitle = document.getElementById('addtitle').value;
-  let userStart = Number(document.getElementById('addstart').value);
+  let userStart = document.getElementById('addstart').value;
   console.log(document.getElementById('addstart'), 
-    document.getElementById('addstart').value, 
-    Number(document.getElementById('addstart')))
-  let userEnd = Number(document.getElementById('addend').value);
+    document.getElementById('addstart').value)
+  let userEnd = document.getElementById('addend').value;
 
   let dataToSend = { title: userTitle, startTime: userStart, endTime: userEnd };
   console.log(dataToSend, JSON.stringify(dataToSend))

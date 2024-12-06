@@ -330,10 +330,6 @@ app.post('/voteForBook', async (req, res) => {
   }
 });
 
-app.listen(port, hostname, () => {
-  console.log(`Listening at: http://${hostname}:${port}`);
-});
-
 // Get all events
 app.get('/events', async (req, res) => {
   try {
@@ -371,4 +367,8 @@ app.post('/events', async (req, res) => {
     console.error("Error adding event to database:", error);
     res.status(500).send("Error adding event to database.");
   }
+});
+
+app.listen(port, hostname, () => {
+  console.log(`Listening at: http://${hostname}:${port}`);
 });
