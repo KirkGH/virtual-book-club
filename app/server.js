@@ -333,3 +333,42 @@ app.post('/voteForBook', async (req, res) => {
 app.listen(port, hostname, () => {
   console.log(`Listening at: http://${hostname}:${port}`);
 });
+
+// Get all events
+app.get('/events', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM events ORDER BY start ASC');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching events from database:", error);
+    res.status(500).send("Error fetching events from database.");
+  }
+});
+
+// Add a new event
+app.post('/events', async (req, res) => {
+  const { title, startTime, endTime } = req.body;
+  console.log('Received POST request with body:', req.body);
+
+  if (typeof title !== 'string' || title.trim().length === 0) {
+    console.error("Invalid title:", title);
+    return res.status(400).send("Invalid title.");
+  }
+  if (!startTime || !endTime) {
+    console.error("Start and end times are missing:", { startTime, endTime });
+    return res.status(400).send("Start and end times are required.");
+  }
+
+  try {
+    // Use correct column names in the query
+    const result = await pool.query(
+      'INSERT INTO events (title, starttime, endtime) VALUES ($1, $2, $3) RETURNING *',
+      [title, startTime, endTime]
+    );
+    console.log('Inserted event:', result.rows[0]);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error adding event to database:", error);
+    res.status(500).send("Error adding event to database.");
+  }
+});

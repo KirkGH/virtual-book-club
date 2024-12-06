@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Club Calendar</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<h1>Calendar Edits</h1>
+
+<p>Create, Edit, or Delete Events</p>
+
+<h2>Add your event to the calendar</h2>
+
+<p>Please give us some information about the event you want to add to the calendar:<br>
+    When you enter a start and end time for the event, it must be entered in milliseconds. <br />
+    For example, 1567674000000 would represent September 05, 2019 at 5:00EST. Due to the specified format, <br/>
+    feel free to use this link below to help you convert the time.<br/>
+    <a href="https://currentmillis.com/" target="_blank">Time Converter</a>
+</p>
+
+<div class="addform">
+    <div>
+        <label for="addtitle">Title:</label>
+        <input id="addtitle" type="text" name="title">
+    </div>
+    <div>
+        <label for="addstart">Start Time:</label>
+        <input id="addstart" type="text" name="title">
+    </div>
+    <div>
+        <label for="addend">End Time:</label>
+        <input id="addend" type="text" name="title">
+    </div>
+    <button id="addsubmit">Add event to the calendar</button>
+</div>
+
+<div id="addmessage"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
