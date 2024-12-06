@@ -1,5 +1,12 @@
 CREATE DATABASE bookclub;
 \c bookclub
+DROP TABLE IF EXISTS threads;
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS book_clubs;
+DROP TABLE IF EXISTS members;
+DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS voting;
+DROP TABLE IF EXISTS events;
 CREATE TABLE threads (
 	id SERIAL PRIMARY KEY,
     book_id int,
@@ -45,4 +52,10 @@ CREATE TABLE voting (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     votes INTEGER DEFAULT 0
+);
+CREATE TABLE events (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  startTime INTEGER NOT NULL,
+  endTime INTEGER NOT NULL
 );
