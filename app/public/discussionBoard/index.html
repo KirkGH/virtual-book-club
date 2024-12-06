@@ -4,37 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Discussion Board</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
   <body>
-    <!-- Post Section -->
-    <h1>Discussion Board</h1>
-    <section id="postSection">
-      <h2>Share Your Thoughts</h2>
-      <form id="postForm">
-        <label for="threadTitle">Thread Title:</label>
-        <input type="text" id="threadTitle" name="threadTitle" required />
-        <label for="bookTitle">Book Title:</label>
-        <input type="text" id="bookTitle" name="bookTitle" required />
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required />
-        <label for="postContent">Your Thoughts:</label>
-        <textarea
-          id="postContent"
-          name="postContent"
-          rows="5"
-          required
-        ></textarea>
-        <button type="submit">Post</button>
-      </form>
-    </section>
+    <div class="container">
+      <!-- Post Section -->
+      <h1>Discussion Board</h1>
+      <section id="postSection">
+        <h2>Share Your Thoughts</h2>
+        <form id="postForm">
+          <label for="threadTitle">Thread Title:</label>
+          <input type="text" id="threadTitle" name="threadTitle" required />
 
-    <hr />
+          <label for="bookTitle">Book Title:</label>
+          <input type="text" id="bookTitle" name="bookTitle" required />
 
-    <!-- Discussion Posts -->
-    <section id="discussionPosts">
-      <h2>Discussion Posts</h2>
-      <div id="postsList"></div>
-    </section>
+          <label for="author">Author:</label>
+          <input type="text" id="author" name="author" required />
+
+          <label for="postContent">Your Thoughts:</label>
+          <textarea
+            id="postContent"
+            name="postContent"
+            rows="5"
+            required
+          ></textarea>
+
+          <button type="submit">Post</button>
+        </form>
+      </section>
+
+      <hr />
+
+      <!-- Discussion Posts -->
+      <section id="discussionPosts">
+        <h2>Discussion Posts</h2>
+        <div id="postsList"></div>
+      </section>
+    </div>
   </body>
 </html>

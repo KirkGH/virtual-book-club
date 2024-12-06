@@ -9,9 +9,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const genre = document.getElementById("genre").value;
     const meetingFrequency = document.getElementById("meetingFrequency").value;
 
-    // Save to localStorage for now until can be stored on database
+    // Generate club code
+    const clubCodeDisplay = document.getElementById("clubCodeDisplay");
+    const clubCodeElement = document.getElementById("clubCode");
+    const clubCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    // Store club data in localStorage
+    const bookClubs = JSON.parse(localStorage.getItem("bookClubCode")) || [];
+    bookClubs.push({ clubCode });
+    localStorage.setItem("bookClubCode", JSON.stringify(bookClubs));
+
+    clubCodeElement.textContent = clubCode;
+    clubCodeDisplay.hidden = false;
+    // Generate club code end
+
     const someUser = "user123";
-    
+
     const bookClubData = {
       name: clubName,
       description: description,
@@ -29,21 +42,21 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => {
         if (response.ok) {
           // Redirect to book club home page on success
-          window.location.href = "./bookClubHome/bookClubHome.html";
+          window.location.href =
+            "/app/public/bookClub/clubCreation/bookClubHome/bookClubHome.html";
         } else {
           // Handle errors
           console.error("Failed to create book club:", response.statusText);
-          alert("An error occurred while creating the book club. Please try again.");
+          alert(
+            "An error occurred while creating the book club. Please try again."
+          );
         }
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("An error occurred while connecting to the server. Please try again.");
-     
-    //localStorage.setItem("bookClubData", JSON.stringify(bookClubData));
-    // End
-
-    //window.location.href = "./bookClubHome/bookClubHome.html";
+        alert(
+          "An error occurred while connecting to the server. Please try again."
+        );
       });
   });
 });
