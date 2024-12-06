@@ -41,15 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const postDiv = document.createElement("div");
         const userProfileDiv = document.createElement("div");
 
-        const avatarImg = document.createElement("img");
-        avatarImg.src = ""; // Placeholder image
-        avatarImg.alt = "User Avatar";
-        userProfileDiv.appendChild(avatarImg);
-
-        const username = document.createElement("p");
-        username.textContent = "rhn29"; // Placeholder username
-        userProfileDiv.appendChild(username);
-
         postDiv.appendChild(userProfileDiv);
 
         const threadTitleH3 = document.createElement("h3");

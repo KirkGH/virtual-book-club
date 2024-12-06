@@ -60,13 +60,13 @@ textarea {
 }
 
 button {
-  margin-top: 20px;
+  margin-top: 10px;
   background-color: #3a5e52;
   color: #ffffff;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -85,10 +85,63 @@ hr {
 }
 
 #postsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   margin-top: 10px;
-  background-color: #f4f1ea;
-  padding: 10px;
+}
+
+#postsList > div {
+  background-color: #ffffff;
   border: 1px solid #3a5e52;
   border-radius: 5px;
-  min-height: 100px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#postsList h3 {
+  font-size: 18px;
+  margin: 0 0 5px 0;
+  color: #3a5e52;
+}
+
+#postsList h4 {
+  font-size: 16px;
+  margin: 5px 0;
+  color: #3a5e52;
+}
+
+#postsList p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #3a5e52;
+}
+
+#postsList > div button {
+  margin-right: 10px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.replyBox {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f4f1ea;
+  border: 1px dashed #3a5e52;
+  border-radius: 5px;
+}
+
+.replyBox textarea {
+  margin-bottom: 10px;
+}
+
+.replyBox button {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+#postsList > div > div p {
+  font-size: 13px;
+  margin: 0;
+  color: #3a5e52;
 }

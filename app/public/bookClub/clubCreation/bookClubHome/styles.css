@@ -1,0 +1,34 @@
+body {
+  background-color: #f4f1ea;
+  font-family: Arial, sans-serif;
+  color: #3a5e52;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  text-align: center;
+}
+
+h1 {
+  color: #3a5e52;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #3a5e52;
+}
+
+strong {
+  color: #2c4c42;
+}
+
+span {
+  font-weight: bold;
+}
