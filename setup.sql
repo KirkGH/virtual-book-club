@@ -55,7 +55,8 @@ CREATE TABLE voting (
 );
 CREATE TABLE events (
   id SERIAL PRIMARY KEY,
+  club VARCHAR(255) NOT NULL,
   title VARCHAR(255) NOT NULL,
-  startTime INTEGER NOT NULL,
-  endTime INTEGER NOT NULL
+  startTime VARCHAR(255) NOT NULL,
+  endTime VARCHAR(255) NOT NULL
 );

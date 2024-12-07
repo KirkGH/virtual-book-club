@@ -351,22 +351,37 @@ app.post('/voteForBook', async (req, res) => {
   }
 });
 
-// Get all events
+// Get all events for creating
 app.get('/events', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM events ORDER BY start ASC');
-    res.status(200).json(result.rows);
+    // Query for events
+    const eventsQuery = 'SELECT * FROM events ORDER BY startTime ASC';
+    const eventsResult = await pool.query(eventsQuery);
+
+    // Query for club names
+    const clubsQuery = 'SELECT name FROM book_clubs';
+    const clubsResult = await pool.query(clubsQuery);
+
+    // Combine the results
+    res.status(200).json({
+      events: eventsResult.rows, // Events data
+      clubs: clubsResult.rows   // Club names data
+    });
   } catch (error) {
-    console.error("Error fetching events from database:", error);
-    res.status(500).send("Error fetching events from database.");
+    console.error("Error fetching data from database:", error);
+    res.status(500).send("Error fetching data from database.");
   }
 });
 
 // Add a new event
 app.post('/events', async (req, res) => {
-  const { title, startTime, endTime } = req.body;
+  const { club, title, startTime, endTime } = req.body;
   console.log('Received POST request with body:', req.body);
 
+  if (typeof club !== 'string' || club.valueOf() === 'Please select your club\'s name') {
+    console.error("Invalid club name:", club);
+    return res.status(400).send("Club name is required.")
+  }
   if (typeof title !== 'string' || title.trim().length === 0) {
     console.error("Invalid title:", title);
     return res.status(400).send("Invalid title.");
@@ -379,8 +394,8 @@ app.post('/events', async (req, res) => {
   try {
     // Use correct column names in the query
     const result = await pool.query(
-      'INSERT INTO events (title, starttime, endtime) VALUES ($1, $2, $3) RETURNING *',
-      [title, startTime, endTime]
+      'INSERT INTO events (club, title, starttime, endtime) VALUES ($1, $2, $3, $4) RETURNING *',
+      [ club, title, startTime, endTime]
     );
     console.log('Inserted event:', result.rows[0]);
     res.status(201).json(result.rows[0]);
