@@ -335,7 +335,7 @@ app.post('/voteForBook', async (req, res) => {
   }
 });
 
-// Get all events
+// Get all events for creating
 app.get('/events', async (req, res) => {
   try {
     // Query for events
@@ -388,6 +388,39 @@ app.post('/events', async (req, res) => {
     res.status(500).send("Error adding event to database.");
   }
 });
+
+// Get all events for deleting
+// Get events based on the selected club
+app.get('/deleteEvents', async (req, res) => {
+  const clubName = req.query.clubName; // Get clubName from query parameters
+
+  try {
+    if (clubName) {
+      // Fetch events for the selected club
+      const eventsQuery = 'SELECT title FROM events WHERE club = $1';
+      const eventsResult = await pool.query(eventsQuery, [clubName]);
+
+      return res.status(200).json({ events: eventsResult.rows });
+    }
+
+    // Default: Fetch all clubs and events
+    const clubsQuery = 'SELECT name FROM book_clubs';
+    const clubsResult = await pool.query(clubsQuery);
+
+    const eventsQuery = 'SELECT * FROM events ORDER BY startTime ASC';
+    const eventsResult = await pool.query(eventsQuery);
+
+    res.status(200).json({
+      clubs: clubsResult.rows,
+      events: eventsResult.rows,
+    });
+  } catch (error) {
+    console.error('Error fetching data from database:', error);
+    res.status(500).send('Error fetching data from database.');
+  }
+});
+
+
 
 app.listen(port, hostname, () => {
   console.log(`Listening at: http://${hostname}:${port}`);
