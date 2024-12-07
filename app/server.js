@@ -17,6 +17,8 @@ const env = require("../env.json");
 const apiKey = env["api_key"];
 const baseUrl = "https://www.googleapis.com/books/v1/volumes";
 
+const cors = require('cors');
+app.use(cors());
 
 const Pool = pg.Pool;
 const pool = new Pool(env);
@@ -349,10 +351,6 @@ app.post('/voteForBook', async (req, res) => {
   }
 });
 
-app.listen(port, hostname, () => {
-  console.log(`Listening at: http://${hostname}:${port}`);
-});
-
 // Get all events
 app.get('/events', async (req, res) => {
   try {
@@ -390,4 +388,102 @@ app.post('/events', async (req, res) => {
     console.error("Error adding event to database:", error);
     res.status(500).send("Error adding event to database.");
   }
+});
+
+// Get all events for deleting
+// Get events based on the selected club
+app.get('/deleteEvents', async (req, res) => {
+  const clubName = req.query.clubName; // Get clubName from query parameters
+
+  try {
+    if (clubName) {
+      // Fetch events for the selected club
+      const eventsQuery = 'SELECT title FROM events WHERE club = $1';
+      const eventsResult = await pool.query(eventsQuery, [clubName]);
+
+      return res.status(200).json({ events: eventsResult.rows });
+    }
+
+    // Default: Fetch all clubs and events
+    const clubsQuery = 'SELECT name FROM book_clubs';
+    const clubsResult = await pool.query(clubsQuery);
+
+    const eventsQuery = 'SELECT * FROM events ORDER BY startTime ASC';
+    const eventsResult = await pool.query(eventsQuery);
+
+    res.status(200).json({
+      clubs: clubsResult.rows,
+      events: eventsResult.rows,
+    });
+  } catch (error) {
+    console.error('Error fetching data from database:', error);
+    res.status(500).send('Error fetching data from database.');
+  }
+});
+
+// Delete an event
+app.post('/deleteEvents', async (req, res) => {
+  const { club, title } = req.body;
+
+  console.log('Received POST request with body:', req.body);
+
+  if (!club || club === "Please select your club's name") {
+    console.error("Invalid club name:", club);
+    return res.status(400).send("Club name is required.");
+  }
+  if (!title || title === "Please select an event") {
+    console.error("Invalid event title:", title);
+    return res.status(400).send("Event title is required.");
+  }
+
+  try {
+    // Use parameterized query to prevent SQL injection
+    const query = 'DELETE FROM events WHERE club = $1 AND title = $2 RETURNING *';
+    const result = await pool.query(query, [club, title]);
+
+    if (result.rowCount === 0) {
+      console.log("No event found to delete for club:", club, "and title:", title);
+      return res.status(404).send("No event found with the provided club and title.");
+    }
+
+    console.log('Deleted event:', result.rows[0]);
+    res.status(200).json({ message: 'Event deleted successfully', deletedEvent: result.rows[0] });
+  } catch (error) {
+    console.error("Error deleting event from database:", error);
+    res.status(500).send("Error deleting event from database.");
+  }
+});
+
+// Get all events to display
+app.get('/clubEvents', async (req, res) => {
+  const clubName = req.query.clubName;
+
+  try {
+    if (clubName) {
+      const eventsQuery = 'SELECT title, startTime, endTime FROM events WHERE club = $1 ORDER BY startTime ASC';
+      const eventsResult = await pool.query(eventsQuery, [clubName]);
+
+      return res.status(200).json({ events: eventsResult.rows });
+    }
+
+    // Default: Fetch all clubs
+    const clubsQuery = 'SELECT name FROM book_clubs';
+    const clubsResult = await pool.query(clubsQuery);
+
+    res.status(200).json({
+      clubs: clubsResult.rows,
+    });
+  } catch (error) {
+    console.error('Error fetching data from database:', error);
+    res.status(500).send('Error fetching data from database.');
+  }
+});
+
+app.get('/clubOwnerEvents', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'calendar', 'clubOwnerEvents.html'));
+});
+
+
+app.listen(port, hostname, () => {
+  console.log(`Listening at: http://${hostname}:${port}`);
 });
