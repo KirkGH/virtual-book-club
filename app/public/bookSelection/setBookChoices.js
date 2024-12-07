@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
   const bookSearchInput = document.getElementById("bookSearch");
+  const searchButton = document.getElementById("searchButton");
   const bookResultsContainer = document.getElementById("bookResults");
   const selectedCountSpan = document.getElementById("selectedCount");
   const saveButton = document.getElementById("saveButton");
+  const selectedBooksList = document.getElementById("selectedBooksList");
 
   let selectedBooks = [];
 
-  bookSearchInput.addEventListener("input", async (e) => {
-    const query = e.target.value;
+  searchButton.addEventListener("click", async () => {
+    const query = bookSearchInput.value.trim();
     if (query.length > 2) {
       try {
         const response = await fetch(`/search?q=${query}`);
@@ -17,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error fetching book suggestions:", error);
       }
     } else {
+      alert("Please enter at least 3 characters to search.");
       bookResultsContainer.innerHTML = "";
     }
   });
@@ -45,13 +48,59 @@ document.addEventListener("DOMContentLoaded", function () {
     if (bookCard.classList.contains("selected")) {
       bookCard.classList.remove("selected");
       selectedBooks = selectedBooks.filter((b) => b !== bookIdentifier);
+      removeBookFromList(bookIdentifier);
     } else if (selectedBooks.length < 3) {
       bookCard.classList.add("selected");
       selectedBooks.push(bookIdentifier);
+      addBookToList(bookIdentifier);
     } else {
       alert("You can only select up to 3 books.");
     }
     updateSelectionCount();
+  }
+
+  function addBookToList(bookIdentifier) {
+    const listItem = document.createElement("li");
+    listItem.textContent = bookIdentifier;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.style.marginLeft = "10px";
+    deleteButton.style.backgroundColor = "#dc3545";
+    deleteButton.style.color = "white";
+    deleteButton.style.border = "none";
+    deleteButton.style.padding = "5px 10px";
+    deleteButton.style.cursor = "pointer";
+    deleteButton.addEventListener("click", () => {
+      removeBookFromList(bookIdentifier);
+      selectedBooks = selectedBooks.filter((b) => b !== bookIdentifier);
+      updateDisplayedBooks();
+      updateSelectionCount();
+    });
+
+    listItem.appendChild(deleteButton);
+    selectedBooksList.appendChild(listItem);
+  }
+
+  function removeBookFromList(bookIdentifier) {
+    const items = selectedBooksList.querySelectorAll("li");
+    items.forEach((item) => {
+      if (item.textContent.includes(bookIdentifier)) {
+        item.remove();
+      }
+    });
+  }
+
+  function updateDisplayedBooks() {
+    const bookCards = bookResultsContainer.querySelectorAll(".book-card");
+    bookCards.forEach((card) => {
+      const cardInfo = card.querySelector("strong").textContent + " by " + card.querySelector("p:nth-child(3)").textContent;
+      if (selectedBooks.includes(cardInfo)) {
+        card.classList.add("selected");
+      } else {
+        card.classList.remove("selected");
+      }
+    });
   }
 
   function updateSelectionCount() {
