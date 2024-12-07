@@ -453,6 +453,34 @@ app.post('/deleteEvents', async (req, res) => {
   }
 });
 
+// Get all events for creating
+app.get('/clubEvents', async (req, res) => {
+  const clubName = req.query.clubName;
+
+  try {
+    if (clubName) {
+      const eventsQuery = 'SELECT title, startTime, endTime FROM events WHERE club = $1 ORDER BY startTime ASC';
+      const eventsResult = await pool.query(eventsQuery, [clubName]);
+
+      return res.status(200).json({ events: eventsResult.rows });
+    }
+
+    // Default: Fetch all clubs
+    const clubsQuery = 'SELECT name FROM book_clubs';
+    const clubsResult = await pool.query(clubsQuery);
+
+    res.status(200).json({
+      clubs: clubsResult.rows,
+    });
+  } catch (error) {
+    console.error('Error fetching data from database:', error);
+    res.status(500).send('Error fetching data from database.');
+  }
+});
+
+app.get('/clubOwnerEvents', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'calendar', 'clubOwnerEvents.html'));
+});
 
 
 app.listen(port, hostname, () => {
