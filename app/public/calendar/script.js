@@ -29,8 +29,6 @@ addButton.addEventListener("click", async (event) => {
   } catch (error) {
       console.error('Error:', error);
   }
-
-  
 });
 
 async function loadEventAndClubData() {
@@ -56,7 +54,6 @@ async function loadEventAndClubData() {
         console.error('Error loading event and club data:', error);
     }
 }
-
-
 // Load data on page load
 document.addEventListener('DOMContentLoaded', loadEventAndClubData);
+
