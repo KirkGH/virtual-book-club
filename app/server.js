@@ -80,6 +80,25 @@ app.get("/search", async (req, res) => {
   }
 });
 
+
+// Route to fetch most popular books
+app.get('/popularBooks', async (req, res) => {
+  try {
+    const query = `${baseUrl}?q=subject:fiction&orderBy=relevance&key=${apiKey}&maxResults=40`;
+
+    const response = await axios.get(query);
+    console.log("API Response:", response.data);  // Log API response to check what is returned
+    const books = response.data.items || [];
+
+    res.status(200).json({ items: books });
+  } catch (error) {
+    console.error('Error fetching popular books:', error.message);
+    res.status(500).json({ error: 'Failed to fetch popular books.' });
+  }
+});
+
+
+
 // Auth0 configuration
 passport.use(
   new Auth0Strategy(

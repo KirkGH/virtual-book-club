@@ -43,4 +43,43 @@ document.getElementById("search-button").addEventListener("click", () => {
       resultsDiv.appendChild(bookDiv);
     });
   }
-  
+
+document.getElementById("popular-books-button").addEventListener("click", () => {
+    fetch('/popularBooks')
+      .then(response => response.json())
+      .then(data => {
+        console.log("Received Popular Books:", data);  // Log to check the data being received
+        const resultsDiv = document.getElementById("popular-books-results");
+        if (data.items && data.items.length > 0) {
+          displayPopularBooks(data.items);
+        } else {
+          resultsDiv.innerHTML = `<p>No popular books found.</p>`;
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching popular books:", error);
+        document.getElementById("popular-books-results").innerHTML = "<p>Error fetching data. Please try again later.</p>";
+      });
+});
+
+function displayPopularBooks(books) {
+    const resultsDiv = document.getElementById("popular-books-results");
+    resultsDiv.innerHTML = "";  // Clear previous results
+
+    books.forEach(book => {
+      const bookInfo = book.volumeInfo;
+      const bookDiv = document.createElement("div");
+      bookDiv.classList.add("book");
+
+      bookDiv.innerHTML = `
+        <h3>${bookInfo.title}</h3>
+        <p><strong>Author(s):</strong> ${bookInfo.authors ? bookInfo.authors.join(", ") : "Unknown"}</p>
+        <p><strong>Publisher:</strong> ${bookInfo.publisher || "Unknown"}</p>
+        <p><strong>Published Date:</strong> ${bookInfo.publishedDate || "Unknown"}</p>
+        ${bookInfo.imageLinks && bookInfo.imageLinks.thumbnail ? `<img src="${bookInfo.imageLinks.thumbnail}" alt="${bookInfo.title} cover">` : ""}
+      `;
+
+      resultsDiv.appendChild(bookDiv);
+    });
+}
+
