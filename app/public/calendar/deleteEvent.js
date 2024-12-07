@@ -1,3 +1,31 @@
+let addButton = document.getElementById('deletesubmit');
+let addSuccessMessage = document.getElementById('deletemessage');
+addButton.addEventListener("click", async (event) => {
+  let userClub = document.getElementById('clubname').value;
+  let userEvent = document.getElementById('event').value;
+
+  let dataToSend = { club: userClub, title: userEvent };
+  console.log(dataToSend, JSON.stringify(dataToSend))
+
+  try {
+      let response = await fetch('/deleteEvents', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(dataToSend)
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        addSuccessMessage.textContent = 'Success';
+      } else {
+        addSuccessMessage.textContent = 'Bad request';
+      }
+
+  } catch (error) {
+      console.error('Error:', error);
+  }
+});
+
+
 async function loadEventAndClubData() {
     try {
         const response = await fetch('/deleteEvents');

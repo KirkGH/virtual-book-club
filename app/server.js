@@ -362,7 +362,7 @@ app.post('/events', async (req, res) => {
   const { club, title, startTime, endTime } = req.body;
   console.log('Received POST request with body:', req.body);
 
-  if (typeof club !== 'string' || club.valueOf() == 'Please select your club\'s name') {
+  if (typeof club !== 'string' || club.valueOf() === 'Please select your club\'s name') {
     console.error("Invalid club name:", club);
     return res.status(400).send("Club name is required.")
   }
@@ -417,6 +417,39 @@ app.get('/deleteEvents', async (req, res) => {
   } catch (error) {
     console.error('Error fetching data from database:', error);
     res.status(500).send('Error fetching data from database.');
+  }
+});
+
+// Delete an event
+app.post('/deleteEvents', async (req, res) => {
+  const { club, title } = req.body;
+
+  console.log('Received POST request with body:', req.body);
+
+  if (!club || club === "Please select your club's name") {
+    console.error("Invalid club name:", club);
+    return res.status(400).send("Club name is required.");
+  }
+  if (!title || title === "Please select an event") {
+    console.error("Invalid event title:", title);
+    return res.status(400).send("Event title is required.");
+  }
+
+  try {
+    // Use parameterized query to prevent SQL injection
+    const query = 'DELETE FROM events WHERE club = $1 AND title = $2 RETURNING *';
+    const result = await pool.query(query, [club, title]);
+
+    if (result.rowCount === 0) {
+      console.log("No event found to delete for club:", club, "and title:", title);
+      return res.status(404).send("No event found with the provided club and title.");
+    }
+
+    console.log('Deleted event:', result.rows[0]);
+    res.status(200).json({ message: 'Event deleted successfully', deletedEvent: result.rows[0] });
+  } catch (error) {
+    console.error("Error deleting event from database:", error);
+    res.status(500).send("Error deleting event from database.");
   }
 });
 
