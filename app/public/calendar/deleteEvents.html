@@ -9,30 +9,29 @@
 
 <body>
 
-    <h1>Delete a Club Event!</h1>
+    <div class="container">
+        <h1>Delete a Club Event!</h1>
+        <p>Please give us some information about the event you want to delete:<br>
+            Please select the club before the event name.
+        </p>
 
-    <p>Please give us some information about the event you want to delete:<br>
-        Please select the club you want to delete an event from.<br>
-        After selecting the club, please select the name of the event you would like to delete.
-    </p>
-
-    <div class="deleteform">
-        <div>
-            <label for "clubname">Club Name:</label>
-            <select id="clubname" name="clubname">
-                <option value="">Please select your club's name</option>
-            </select>
+        <div class="deleteform">
+            <div>
+                <label for "clubname">Club Name:</label>
+                <select id="clubname" name="clubname">
+                    <option value="">Please select your club's name</option>
+                </select>
+            </div>
+            <div>
+                <label for="event">Event Title:</label>
+                <select id="event" name="event">
+                    <option value="">Please select an event</option>
+                </select>
+            </div>
+            <button id="deletesubmit">Delete event</button>
         </div>
-        <div>
-            <label for="event">Event Title:</label>
-            <select id="event" name="event">
-                <option value="">Please select an event</option>
-            </select>
-        </div>
-        <button id="deletesubmit">Delete event</button>
+        <div id="deletemessage"></div>
     </div>
-    <div id="deletemessage"></div>
-
 
     <script src="deleteEvent.js"></script>
 
