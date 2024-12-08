@@ -41,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
       bookCard.addEventListener("click", () => toggleBookSelection(bookCard, { title, authors }));
       bookResultsContainer.appendChild(bookCard);
     });
+
+    updateDisplayedBooks(); // Sync UI with the selectedBooks array
   }
 
   function toggleBookSelection(bookCard, book) {
@@ -57,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("You can only select up to 3 books.");
     }
     updateSelectionCount();
+    updateDisplayedBooks(); // Re-render book cards to reflect changes
   }
 
   function addBookToList(bookIdentifier) {
@@ -94,7 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateDisplayedBooks() {
     const bookCards = bookResultsContainer.querySelectorAll(".book-card");
     bookCards.forEach((card) => {
-      const cardInfo = card.querySelector("strong").textContent + " by " + card.querySelector("p:nth-child(3)").textContent;
+      const cardTitle = card.querySelector("strong").textContent;
+      const cardAuthors = card.querySelector("p:nth-child(3)").textContent.replace("by ", "");
+      const cardInfo = `${cardTitle} by ${cardAuthors}`;
       if (selectedBooks.includes(cardInfo)) {
         card.classList.add("selected");
       } else {
