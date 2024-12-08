@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Create a Club Event</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
+    <div class="container">
+        <h1>Create a Club Event!</h1>
+        <p>Please give us some information about the event you want to add:<br>
 
-<h1>Create a Club Event!</h1>
+        </p>
+        <div class="addform">
+            <div>
+                <label for "clubname">Club Name:</label>
+                <select id="clubname" name="clubname">
+                    <option value="">Please select your club's name</option>
+                </select>
+            </div>
+            <div>
+                <label for="addtitle">Title:</label>
+                <input id="addtitle" type="text" name="title">
+            </div>
+            <p>When you provide a start and end time for the event, the data entered will directly reflect in the
+                display. For example, if you enter "Friday, December 20th at 3:00pm", "Friday, December 20th at 3:00pm"
+                will be
+                displayed.</p>
+            <div>
+                <label for="addstart">Start Time:</label>
+                <input id="addstart" type="text" name="title">
+            </div>
+            <div>
+                <label for="addend">End Time:</label>
+                <input id="addend" type="text" name="title">
+            </div>
+            <button id="addsubmit">Create event</button>
+        </div>
+        <div id="addmessage"></div>
+    </div>
 
-<p>Please give us some information about the event you want to add:<br>
-    When you provide a start and end time for the event, the data entered will directly reflect in the display.<br>
-    For example, if you enter "Friday, December 20th at 3:00pm", "Friday, December 20th at 3:00pm" will be displayed.
-</p>
-
-<div class="addform">
-    <div>
-        <label for "clubname">Club Name:</label>
-        <select id="clubname" name="clubname">
-            <option value="">Please select your club's name</option>
-        </select>
-    </div>
-    <div>
-        <label for="addtitle">Title:</label>
-        <input id="addtitle" type="text" name="title">
-    </div>
-    <div>
-        <label for="addstart">Start Time:</label>
-        <input id="addstart" type="text" name="title">
-    </div>
-    <div>
-        <label for="addend">End Time:</label>
-        <input id="addend" type="text" name="title">
-    </div>
-    <button id="addsubmit">Create event</button>
-</div>
-<div id="addmessage"></div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
