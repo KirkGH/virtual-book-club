@@ -1,14 +1,23 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const bookClubData = JSON.parse(localStorage.getItem("bookClubData"));
-
-  if (bookClubData) {
-    document.getElementById("clubNameHeading").textContent =
-      bookClubData.clubName;
-    document.getElementById("clubDescription").textContent =
-      bookClubData.description;
-    document.getElementById("clubGenre").textContent = bookClubData.genre;
-    document.getElementById("clubFrequency").textContent =
-      bookClubData.meetingFrequency;
+document.addEventListener("DOMContentLoaded", async function () {
+  
+  try {
+    const response = await fetch("/bookClubHome");
+    if (!response.ok) {
+      throw new Error("Failed to fetch book club data");
+    }
+    const bookClubData = await response.json();
+    
+    if (bookClubData) {
+      document.getElementById("clubNameHeading").textContent =
+        bookClubData.clubName;
+      document.getElementById("clubDescription").textContent =
+        bookClubData.description;
+      document.getElementById("clubGenre").textContent = bookClubData.genre;
+      document.getElementById("clubFrequency").textContent =
+        bookClubData.meetingFrequency;
+    }
+  }catch (error) {
+    console.error("Error loading book club data:", error);
   }
 });
 

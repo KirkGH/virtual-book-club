@@ -358,6 +358,16 @@ app.post('/createBookClub', async (req, res) => {
   }
 });
 
+app.get("/bookClubHome", async (req, res) => {
+  try {
+    const bookClubData = await db.query("SELECT * FROM book_clubs WHERE id = $1", [1]);
+    res.json(bookClubData.rows[0]); 
+  } catch (error) {
+    console.error("Error retrieving book club data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post('/voteForBook', async (req, res) => {
   const { title } = req.body;
 
