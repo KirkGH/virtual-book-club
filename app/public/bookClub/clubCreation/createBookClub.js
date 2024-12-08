@@ -60,3 +60,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
+function toggleMenu() {
+  const userMenu = document.getElementById('userMenuID');
+  userMenu.classList.toggle('active');
+}
+
+document.addEventListener('click', function (event) {
+  const userMenu = document.getElementById('userMenuID');
+  const userNameButton = document.querySelector('.userNameClass');
+
+  if (!userNameButton.contains(event.target) && !userMenu.contains(event.target)) {
+      userMenu.classList.remove('active');
+  }
+});

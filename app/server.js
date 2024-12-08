@@ -29,11 +29,6 @@ pool.connect().then(function () {
 app.use(express.static("public"));
 app.use(express.json());
 
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "searchBooks", "index.html"));
-});
-
 // Route to handle book search requests with genre filtering
 app.get("/search", async (req, res) => {
   const { q, author, genre } = req.query;
@@ -99,8 +94,6 @@ app.get('/popularBooks', async (req, res) => {
   }
 });
 
-
-
 // Auth0 configuration
 passport.use(
   new Auth0Strategy(
@@ -148,17 +141,34 @@ app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/' }), (
   });
 });
 
-app.get('/homepageAuth', (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/login');
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
   }
+  res.redirect('/login');
+}
+
+app.get('/bookClub/clubCreation/createBookClub', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'bookClub', 'clubCreation', 'createBookClub.html'));
+});
+
+app.get('/homepageAuth', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'homePage', 'homepageAuth.html'));
 });
 
-app.get('/profile', (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/login');
+app.get('/user', (req, res) => {
+  if (req.user) {
+    res.json({ name: req.user.name });
+  } else {
+    res.status(401).json({ error: 'User not logged in' });
   }
+});
+
+app.get("/searchBooks", ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "searchBooks", "index.html"));
+});
+
+app.get('/profile', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile', 'profile.html'));
 });
 

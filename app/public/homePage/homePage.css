@@ -11,7 +11,7 @@ body {
 header {
     background-color: #3a5e52; 
     color: white;
-    padding: 10px 20px;
+    padding: 20px 20px;
     display: flex;
     justify-content: space-between; 
     align-items: center;
@@ -21,16 +21,20 @@ header {
     max-width: 100%; 
     box-sizing: border-box; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Title */
-.logo h1 {
-    font-size: 1.8em;
+    font-family: 'Georgia', serif;
+  }
+  
+  .logo h1 {
+    font-size: 2em; 
     font-weight: bold;
-}
-
-/* Navigation Links */
-.nav-links {
+    color: white;  
+    margin: 0;   
+    padding: 0;   
+    text-align: left; 
+  }
+  
+  /* Navigation Links */
+  .nav-links {
     display: flex;
     justify-content: center; 
     gap: 30px;
@@ -38,56 +42,56 @@ header {
     padding: 0;
     margin: 0;
     flex-grow: 1; 
-}
-
-.nav-links a {
+  }
+  
+  .nav-links a {
     color: white;
     text-decoration: none;
     font-size: 1.1em;
-}
-
-.nav-links a:hover {
+  }
+  
+  .nav-links a:hover {
     text-decoration: underline;
-}
-
-/* Signup Button */
-.signup a {
+  }
+  
+  /* Signup Button */
+  .signup a {
     background-color: #ffffff;
     color: #3a5e52; 
     padding: 8px 15px;
     font-size: 1.1em;
     text-decoration: none;
     border-radius: 5px;
-}
-
-.signup a:hover {
+  }
+  
+  .signup a:hover {
     background-color: #e4e4e4;
-}
-
-/* Main Content Section */
-#welcome-section {
+  }
+  
+  /* Main Content Section */
+  #welcome-section {
     text-align: center;
     padding: 50px 20px;
-}
-
-.description {
+  }
+  
+  .description {
     color: #3a3a3a;
     font-size: 1.1em;
     line-height: 1.6;
-}
-
-.description ul {
+  }
+  
+  .description ul {
     text-align: left;
     display: inline-block;
     margin-top: 20px;
-}
-
-/* Sign-up Call to Action */
-.signup-cta {
+  }
+  
+  /* Sign-up Call to Action */
+  .signup-cta {
     margin-top: 40px;
-}
-
-#signupButton {
+  }
+  
+  #signupButton {
     background-color: #3a5e52;
     color: white;
     font-size: 1.5em;
@@ -95,37 +99,41 @@ header {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-}
-
-#signupButton:hover {
+  }
+  
+  #signupButton:hover {
     background-color: #2c4c42;
-}
-
-html, body {
+  }
+  
+  html, body {
+    margin: 0; 
+    padding: 0; 
     width: 100%;
     overflow-x: hidden;
-}
-
-/* User Drawer CSS */
-.user-menu {
+  }
+  
+  /* User Drawer CSS */
+  .userMenuClass {
     position: relative;
     display: inline-block;
-}
-
-.user-name {
+  }
+  
+  .usernameClass {
     background: none;
     border: none;
-    color: #333;
+    color: #ffffff;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-}
-
-.user-name:hover {
+    font-family: 'Georgia', serif;
+  }
+  
+  .usernameClass:hover {
     text-decoration: underline;
-}
-
-.dropdown {
+    background-color: #2c4c42;
+  }
+  
+  .dropdown {
     display: none;
     position: absolute;
     right: 0;
@@ -135,19 +143,20 @@ html, body {
     min-width: 150px;
     border-radius: 4px;
     overflow: hidden;
-}
-
-.dropdown a {
+  }
+  
+  .dropdown a {
     color: black;
     text-decoration: none;
     display: block;
     padding: 10px 15px;
-}
-
-.dropdown a:hover {
+  }
+  
+  .dropdown a:hover {
     background-color: #f1f1f1;
-}
-
-.dropdown.active {
+  }
+  
+  .dropdown.active {
     display: block;
-}
+  }
+  

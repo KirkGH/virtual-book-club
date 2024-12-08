@@ -13,15 +13,16 @@
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="books.html">Books</a></li>
-                <li><a href="bookClubHome.html">Clubs</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="/homepageAuth">Home</a></li>
+                <li><a href="/searchBooks">Search Books</a></li>
+                <li><a href="/bookClub/clubCreation/createBookClub">Create Clubs</a></li>
+                <li><a href="about.html">About Us</a></li>
             </ul>
         </nav>
         <div class="user-info">
-            <div class="user-menu">
-                <button class="user-name" onclick="toggleMenu()">Welcome, <strong>{{user.name}}</strong></button>
-                <div class="dropdown" id="userMenu">
+            <div class="userMenuClass">
+                <button class="usernameClass" onclick="toggleMenu()">Welcome, <strong id="usernameID"> </strong></button>
+                <div class="dropdown" id="userMenuID">
                     <a href="/profile">Profile</a>
                     <a href="/logout">Log Out</a>
                 </div>
