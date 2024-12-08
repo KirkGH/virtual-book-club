@@ -148,8 +148,28 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
-app.get('/bookClub/clubCreation/createBookClub', ensureAuthenticated, (req, res) => {
+app.get('/bookClub/createBookClub', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'bookClub', 'clubCreation', 'createBookClub.html'));
+});
+
+app.get('/bookClub/clubCreation/bookClubHome/bookClubHome', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'bookClub', 'clubCreation', 'bookClubHome', 'bookClubHome.html'));
+});
+
+app.get('/discussionBoard', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'discussionBoard', 'index.html'));
+});
+
+app.get('/bookSelection', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '/bookSelection', 'setBookChoices.html'));
+});
+
+app.get('/votingPage', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '/votingPage', 'voteForBook.html'));
+});
+
+app.get('/calendar', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '/calendar', 'clubEvents.html'));
 });
 
 app.get('/homepageAuth', ensureAuthenticated, (req, res) => {
