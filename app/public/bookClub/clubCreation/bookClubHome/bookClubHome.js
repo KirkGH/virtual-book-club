@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         bookClubData.description;
       document.getElementById("clubGenre").textContent = bookClubData.genre;
       document.getElementById("clubFrequency").textContent =
-        bookClubData.meetFrequency;
+        bookClubData.meetfrequency;
     }
   }catch (error) {
     console.error("Error loading book club data:", error);
