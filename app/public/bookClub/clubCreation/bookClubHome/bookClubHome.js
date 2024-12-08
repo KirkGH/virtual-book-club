@@ -11,3 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       bookClubData.meetingFrequency;
   }
 });
+
+function navigateTo(page) {
+  window.location.href = page;
+}
