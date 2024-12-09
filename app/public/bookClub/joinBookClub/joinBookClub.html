@@ -8,7 +8,30 @@
     <script src="joinBookClub.js" defer></script>
   </head>
   <body>
-    <div class="container">
+    <header>
+      <div class="logo">
+        <h1>Gentle Readers</h1>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/homepageAuth">Home</a></li>
+          <li><a href="/searchBooks">Search Books</a></li>
+          <li><a href="/bookClub/clubCreation/createBookClub">Create Clubs</a></li>
+          <li><a href="/bookClub/clubCreation/bookClubHome/bookClubHome">Club Home</a></li>
+        </ul>
+      </nav>
+      <div class="user-info">
+        <div class="userMenuClass">
+          <button class="usernameClass" onclick="toggleMenu()">Welcome, <strong id="usernameID"> </strong></button>
+          <div class="dropdown" id="userMenuID">
+            <a href="/profile">Profile</a>
+            <a href="/logout">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="bookClub">
       <h1>Join a Book Club</h1>
       <form id="joinClubForm">
         <label for="joinCode">Enter the Join Code:</label>

@@ -101,7 +101,7 @@ passport.use(
       domain: process.env.AUTH0_DOMAIN,
       clientID: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback',
+      callbackURL:'http://localhost:3000/callback',
     },
     (accessToken, refreshToken, extraParams, profile, done) => {
       return done(null, profile);
@@ -174,7 +174,7 @@ app.get('/calendar', ensureAuthenticated, (req, res) => {
 });
 
 app.get('/calendar/events', ensureAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'calendar', 'clubEvents.html'));
+  res.sendFile(path.join(__dirname, 'public', 'calendar', 'events.html'));
 });
 
 app.get('/calendar/deleteEvents', ensureAuthenticated, (req, res) => {
@@ -186,7 +186,11 @@ app.get('/homepageAuth', ensureAuthenticated, (req, res) => {
 });
 
 app.get('/calendar/clubEvents', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', '/calendar', 'events.html'));
+  res.sendFile(path.join(__dirname, 'public', '/calendar', 'clubEvents.html'));
+});
+
+app.get('/bookClub/joinBookClub/joinBookClub', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'bookClub', 'joinBookClub', 'joinBookClub.html'));
 });
 
 app.get('/user', (req, res) => {
@@ -205,7 +209,7 @@ app.get('/profile', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile', 'profile.html'));
 });
 
-app.get('/', (req, res) => {
+app.get('/homepage', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/homepageAuth');
   }
