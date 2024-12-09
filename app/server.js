@@ -209,7 +209,7 @@ app.get('/profile', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile', 'profile.html'));
 });
 
-app.get('/homepage', (req, res) => {
+app.get('/homePage/homePage', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/homepageAuth');
   }
@@ -226,8 +226,8 @@ app.get('/logout', (req, res) => {
     res.clearCookie('connect.sid');
 
     const returnTo = process.env.NODE_ENV === 'production' 
-      ? 'https://virtualbookclub001.fly.dev/' 
-      : 'http://localhost:3000/';
+      ? 'https://virtualbookclub001.fly.dev/homePage/homePage' 
+      : 'http://localhost:3000/homePage/homePage';
 
     const logoutURL = `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent(returnTo)}&client_id=${process.env.AUTH0_CLIENT_ID}`;
     
