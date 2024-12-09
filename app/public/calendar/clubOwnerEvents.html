@@ -9,19 +9,48 @@
 
 <body>
 
+    <header>
+        <div class="logo">
+          <h1>Gentle Readers</h1>
+        </div>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="/homepageAuth">Home</a></li>
+            <li><a href="/searchBooks">Search Books</a></li>
+            <li><a href="/bookClub/clubCreation/createBookClub">Create Clubs</a></li>
+            <li><a href="/bookClub/clubCreation/bookClubHome/bookClubHome">Club Home</a></li>
+          </ul>
+        </nav>
+        <div class="user-info">
+          <div class="userMenuClass">
+            <button class="usernameClass" onclick="toggleMenu()">Welcome, <strong id="usernameID"> </strong></button>
+            <div class="dropdown" id="userMenuID">
+              <a href="/profile">Profile</a>
+              <a href="/logout">Log Out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
     <h1>Event Options for Clubs</h1>
 
     <p>Hi there! We're so excited that you would like to create events for your club. Currently,
         there are options to create and delete events. Please follow the instructions for each.
         We hope you enjoy the event!<br>
-        <a href="events.html">Create an event here!</a><br>
-        <a href="deleteEvents.html">Delete an event here!</a><br>
+        <a href="/calendar/events">
+            <button id="event">Create an event here!</button>
+        </a>
+        <a href="/calendar/deleteEvents">
+            <button id="deleteEvent">Delete an event here!</button>
+        </a>
     </p>
 
     <p>
         After you've filled out the forms, you can double check that the appropriate action occured
         by using the link below. Don't forget to select your club from the menu!<br>
-        <a href="clubEvents.html">View your club's events here!</a><br>
+        <a href="/calendar/clubEvents">
+            <button id="clubEvent">View your club's events here!</button>
+        </a>        
     </p>
 
 </body>

@@ -118,3 +118,21 @@ document.addEventListener("DOMContentLoaded", function () {
     alert("Book choices saved!");
   });
 });
+
+function toggleMenu() {
+  const userMenu = document.getElementById('userMenuID');
+  userMenu.classList.toggle('active');
+}
+
+document.addEventListener('click', function (event) {
+  const userMenu = document.getElementById('userMenuID');
+  const userNameButton = document.querySelector('.userNameClass');
+
+  if (!userNameButton.contains(event.target) && !userMenu.contains(event.target)) {
+      userMenu.classList.remove('active');
+  }
+});
+
+document.getElementById('signupButton').addEventListener('click', function() {
+  window.location.href = '/login';
+});

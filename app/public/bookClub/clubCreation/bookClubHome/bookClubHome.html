@@ -8,6 +8,29 @@
     <script src="bookClubHome.js" defer></script>
   </head>
   <body>
+    <header>
+      <div class="logo">
+        <h1>Gentle Readers</h1>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/homepageAuth">Home</a></li>
+          <li><a href="/searchBooks">Search Books</a></li>
+          <li><a href="/bookClub/clubCreation/createBookClub">Create Clubs</a></li>
+          <li><a href="/bookClub/clubCreation/bookClubHome/bookClubHome">Club Home</a></li>
+        </ul>
+      </nav>
+      <div class="user-info">
+        <div class="userMenuClass">
+          <button class="usernameClass" onclick="toggleMenu()">Welcome, <strong id="usernameID"> </strong></button>
+          <div class="dropdown" id="userMenuID">
+            <a href="/profile">Profile</a>
+            <a href="/logout">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <h1 id="clubNameHeading"></h1>
     <p id="clubDescription"></p>
     <p><strong>Genre:</strong> <span id="clubGenre"></span></p>

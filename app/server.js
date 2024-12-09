@@ -148,7 +148,7 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
-app.get('/bookClub/createBookClub', ensureAuthenticated, (req, res) => {
+app.get('/bookClub/clubCreation/createBookClub', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'bookClub', 'clubCreation', 'createBookClub.html'));
 });
 
@@ -169,11 +169,23 @@ app.get('/votingPage', ensureAuthenticated, (req, res) => {
 });
 
 app.get('/calendar', ensureAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', '/calendar', 'clubEvents.html'));
+  res.sendFile(path.join(__dirname, 'public', 'calendar', 'clubOwnerEvents.html'));
+});
+
+app.get('/calendar/events', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'calendar', 'clubEvents.html'));
+});
+
+app.get('/calendar/deleteEvents', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'calendar', 'deleteEvents.html'));
 });
 
 app.get('/homepageAuth', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'homePage', 'homepageAuth.html'));
+});
+
+app.get('/calendar/clubEvents', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '/calendar', 'events.html'));
 });
 
 app.get('/user', (req, res) => {
