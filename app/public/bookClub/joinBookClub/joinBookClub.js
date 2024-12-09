@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (matchedClub) {
       window.location.href =
-        "/app/public/bookClub/clubCreation/bookClubHome/bookClubHome.html";
+        "/bookClub/clubCreation/bookClubHome/bookClubHome";
     } else {
       joinStatus.textContent = "Invalid join code. Please try again.";
     }
