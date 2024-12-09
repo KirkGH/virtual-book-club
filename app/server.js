@@ -101,13 +101,14 @@ passport.use(
       domain: process.env.AUTH0_DOMAIN,
       clientID: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/callback',
+      callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback',
     },
     (accessToken, refreshToken, extraParams, profile, done) => {
       return done(null, profile);
     }
   )
 );
+
 
 // Passport session setup
 passport.serializeUser((user, done) => done(null, user));
@@ -204,11 +205,11 @@ app.get('/profile', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile', 'profile.html'));
 });
 
-app.get('/homepage', (req, res) => {
+app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/homepageAuth');
   }
-  res.sendFile(path.join(__dirname, 'public', 'homepage', 'homepage.html'));
+  res.sendFile(path.join(__dirname, 'public', 'homePage', 'homePage.html'));
 });
 
 app.get('/logout', (req, res) => {
@@ -218,10 +219,14 @@ app.get('/logout', (req, res) => {
     }
 
     // Clear cookies
-    res.clearCookie('connect.sid'); 
+    res.clearCookie('connect.sid');
 
-    // Redirect to Auth0 logout URL
-    const logoutURL = `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent('http://localhost:3000/homepage')}&client_id=${process.env.AUTH0_CLIENT_ID}`;
+    const returnTo = process.env.NODE_ENV === 'production' 
+      ? 'https://virtualbookclub001.fly.dev/' 
+      : 'http://localhost:3000/';
+
+    const logoutURL = `https://${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent(returnTo)}&client_id=${process.env.AUTH0_CLIENT_ID}`;
+    
     res.redirect(logoutURL);
   });
 });
