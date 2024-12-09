@@ -15,9 +15,10 @@ Our project will be an online book club organizer. We want people to be able to 
    npm install dotenv
    npm install passport passport-auth0
    npm install express-session
+   npm install cors
 
-2. **Set Up Environment:**
+3. **Set Up Environment:**
    npm run setup
 
-3. **Start the Application:**
+4. **Start the Application:**
    npm run start
