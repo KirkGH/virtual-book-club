@@ -22,3 +22,7 @@ Our project will be an online book club organizer. We want people to be able to 
 
 4. **Start the Application:**
    npm run start
+
+5. **Extra Notes**
+   Don't forget to copy .env_example, and create a new file named .env, and replace the specified values.
+   Don't forget to clone env_sample.json, and create a new file named env.json, and replace the specified values.
